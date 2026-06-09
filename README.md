@@ -157,7 +157,7 @@ contém um exemplo de configuração utilizando .htaccess para manter as rotas f
 O arquivo:
 
 ```text
-config_nginx.txt
+config_nginx.md
 ```
 
 contém um exemplo de configuração utilizando:
