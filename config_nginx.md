@@ -1,47 +1,126 @@
-# URL Amigável com JavaScript Puro
+# Configuração do Nginx para URL Amigável com JavaScript Puro
 
-Projeto desenvolvido utilizando apenas **HTML**, **CSS**, **Bootstrap** e **JavaScript Puro**, demonstrando como criar uma aplicação com **URLs amigáveis**, navegação dinâmica, carregamento de templates HTML e manipulação do histórico do navegador sem utilizar frameworks ou backend.
+Este projeto utiliza a History API do navegador para criar URLs amigáveis sem recarregar a página.
 
----
+Exemplos:
 
-## 🎯 Objetivo
+* /
+* /sobre
+* /contato
 
-O objetivo deste projeto é mostrar que é possível construir uma experiência semelhante a uma SPA (Single Page Application) utilizando apenas recursos nativos do navegador.
+Quando o usuário acessa uma dessas URLs diretamente ou pressiona F5, o servidor precisa retornar sempre o arquivo `index.html`.
 
-Durante o desenvolvimento foram utilizados:
+Caso contrário, o Nginx tentará localizar um arquivo físico chamado:
 
-* History API
-* Fetch API
-* Templates HTML
-* JavaScript Modular (ES Modules)
-* Apache
-* Nginx
-* Bootstrap 5
+* sobre
+* contato
 
----
-
-## 📺 Vídeo Completo
-
-Assista ao vídeo completo no YouTube:
-
-👉 [URL Amigável sem Framework e sem Backend](https://youtu.be/SEU_VIDEO_AQUI)
+e retornará erro 404.
 
 ---
 
-## 🚀 Funcionalidades
+## Arquivo de configuração
 
-* URL amigável
-* Navegação sem recarregar a página
-* Alteração dinâmica do título da página
-* Carregamento de conteúdo via Fetch API
-* Tratamento de página 404
-* Estrutura modular utilizando JavaScript moderno
-* Compatível com Apache
-* Compatível com Nginx
+Crie um bloco semelhante ao exemplo abaixo:
+
+```nginx
+server {
+
+    listen 80;
+
+    server_name localhost;
+
+    root /CAMINHO/DO/SEU/PROJETO;
+
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+}
+```
 
 ---
 
-## 📂 Estrutura do Projeto
+## Alterando o diretório raiz
+
+Substitua:
+
+```nginx
+root /CAMINHO/DO/SEU/PROJETO;
+```
+
+pelo caminho real do projeto.
+
+Exemplo:
+
+```nginx
+root /var/www/html/amigaveljs;
+```
+
+---
+
+## Testando a configuração
+
+Após salvar o arquivo execute:
+
+```bash
+sudo nginx -t
+```
+
+Se tudo estiver correto o Nginx exibirá:
+
+```text
+syntax is ok
+test is successful
+```
+
+---
+
+## Reiniciando o Nginx
+
+Depois da validação execute:
+
+```bash
+sudo systemctl restart nginx
+```
+
+ou
+
+```bash
+sudo service nginx restart
+```
+
+---
+
+## Como funciona
+
+A instrução:
+
+```nginx
+try_files $uri $uri/ /index.html;
+```
+
+verifica:
+
+1. Existe um arquivo físico?
+2. Existe um diretório físico?
+3. Caso não exista nenhum dos dois, retorna o arquivo `index.html`.
+
+Isso permite que URLs como:
+
+```text
+/sobre
+/contato
+/produtos
+```
+
+continuem funcionando normalmente mesmo após atualizar a página.
+
+---
+
+## Estrutura recomendada
 
 ```text
 amigaveljs/
@@ -60,161 +139,13 @@ amigaveljs/
 │   ├── contato.html
 │   └── 404.html
 │
-├── .htaccess
-├── .config_nginx.txt
-├── index.html
-└── README.md
-```
-
-## ⚙️ Como Funciona
-
-### app.js
-
-Responsável por:
-
-* Interceptar cliques nos links.
-* Impedir o recarregamento da página.
-* Acionar o roteador.
-* Controlar navegação utilizando History API.
-
-### router.js
-
-Responsável por:
-
-* Definir as rotas.
-* Atualizar o título da página.
-* Chamar o renderizador.
-* Tratar páginas inexistentes.
-
-### renderer.js
-
-Responsável por:
-
-* Carregar os templates HTML.
-* Inserir o conteúdo dinamicamente dentro da aplicação.
-
----
-
-## 🔗 Rotas Disponíveis
-
-| URL      | Página                |
-| -------- | --------------------- |
-| /        | Home                  |
-| /sobre   | Sobre                 |
-| /contato | Contato               |
-| /404     | Página não encontrada |
-
----
-
-## 🌐 Configuração Apache
-
-Arquivo `.htaccess`
-
-```apache
-RewriteEngine On
-
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-
-RewriteRule ^ index.html [L]
+└── index.html
 ```
 
 ---
 
-## 🌐 Configuração Nginx
+## Observação
 
-Arquivo `.config_nginx.txt`
+Esta configuração é necessária apenas para ambientes utilizando Nginx.
 
-```nginx
-server {
-
-    listen 80;
-
-    server_name localhost;
-
-    root /caminho/do/seu/projeto;
-
-    index index.html;
-
-    location / {
-        try_files $uri $uri/ /index.html;
-    }
-
-}
-```
-
-Substitua:
-
-```text
-/caminho/do/seu/projeto
-```
-
-pela pasta onde o projeto está instalado.
-
-Exemplo:
-
-```text
-/var/www/html/amigaveljs
-```
-
----
-
-## 🛠 Tecnologias Utilizadas
-
-* HTML5
-* CSS3
-* Bootstrap 5
-* JavaScript ES6+
-* Fetch API
-* History API
-* Apache
-* Nginx
-
----
-
-## 📚 Conceitos Demonstrados
-
-* SPA (Single Page Application)
-* JavaScript Modular
-* Programação Orientada a Eventos
-* Roteamento Front-End
-* Renderização Dinâmica
-* Manipulação de Histórico
-* Clean Code
-* Separação de Responsabilidades
-
----
-
-## 🎥 Canal Rogerio Pontes TI
-
-Se você gosta de conteúdos sobre:
-
-* JavaScript
-* PHP
-* Linux
-* Git e GitHub
-* Arquitetura de Software
-* Clean Code
-* Desenvolvimento Web
-
-Inscreva-se no canal:
-
-👉 [https://www.youtube.com/@rogeriopontesti](https://www.youtube.com/@rogeriopontesti)
-
----
-
-## ⭐ Apoie o Projeto
-
-Se este projeto foi útil para você:
-
-* Deixe uma estrela neste repositório.
-* Compartilhe com outros desenvolvedores.
-* Inscreva-se no canal para acompanhar novos projetos.
-
----
-
-## 📄 Licença
-
-Projeto disponibilizado para fins educacionais.
-
-Sinta-se livre para estudar, modificar e utilizar como base para seus próprios projetos.
+Caso utilize Apache, consulte o arquivo `.htaccess` disponível neste projeto.
