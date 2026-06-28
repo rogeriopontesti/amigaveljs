@@ -1,40 +1,63 @@
-# URL AMIGÁVEL com JS PURO sem Framework 😳
+# Como criar URLs amigáveis usando apenas JavaScript
 
-Projeto desenvolvido utilizando apenas HTML, CSS, Bootstrap e JavaScript puro para demonstrar a criação de URLs amigáveis sem frameworks e sem backend.
+Neste projeto você aprenderá como criar uma **SPA (Single Page Application)** utilizando apenas **JavaScript puro**, sem React, Vue, Angular ou qualquer outro framework.
 
-O objetivo deste projeto é mostrar como construir uma SPA (Single Page Application) simples utilizando recursos nativos do navegador, como History API, Fetch API e módulos JavaScript ES6.
+O objetivo é mostrar que é possível implementar **roteamento**, **URLs amigáveis**, **renderização dinâmica de páginas** e uma arquitetura organizada utilizando apenas recursos nativos do navegador.
 
----
-
-## Demonstração
-
-O sistema possui navegação entre páginas sem recarregar o navegador.
-
-Rotas disponíveis:
-
-* /
-* /sobre
-* /contato
-* /404
-
-Cada rota possui seu próprio template HTML carregado dinamicamente.
+Este projeto serve como base para entender como frameworks modernos funcionam internamente e será evoluído nos próximos vídeos para uma loja virtual completa.
 
 ---
 
-## Tecnologias Utilizadas
+# 🎥 Vídeo Completo
 
-* HTML5
-* CSS3
-* Bootstrap 5
-* JavaScript ES6 Modules
-* History API
-* Fetch API
-* Apache
-* Nginx
+https://youtu.be/0RDbccBC9YU
 
 ---
 
-## Estrutura do Projeto
+# 📚 O que você vai aprender
+
+✅ Como criar URLs amigáveis usando JavaScript puro
+
+✅ Como criar uma SPA (Single Page Application)
+
+✅ Como utilizar a History API
+
+✅ Como utilizar o método `history.pushState()`
+
+✅ Como carregar páginas utilizando a Fetch API
+
+✅ Como trabalhar com JavaScript ES Modules
+
+✅ Como importar e exportar funções
+
+✅ Como renderizar HTML dinamicamente
+
+✅ Como organizar um projeto JavaScript sem frameworks
+
+✅ Como separar responsabilidades em módulos
+
+✅ Como alterar o título da página automaticamente
+
+✅ Como configurar Apache para SPAs
+
+✅ Como configurar Nginx para SPAs
+
+---
+
+# 🚀 Tecnologias utilizadas
+
+- HTML5
+- CSS3
+- Bootstrap 5
+- JavaScript ES6 Modules
+- History API
+- Fetch API
+- Apache
+- Nginx
+
+---
+
+# 📁 Estrutura do projeto
 
 ```text
 amigaveljs/
@@ -45,10 +68,10 @@ amigaveljs/
 ├── js/
 │   ├── app.js
 │   ├── router.js
-│   └── renderer.js
+│   └── render.js
 │
 ├── templates/
-│   ├── home.html
+│   ├── index.html
 │   ├── sobre.html
 │   ├── contato.html
 │   └── 404.html
@@ -61,49 +84,55 @@ amigaveljs/
 
 ---
 
-## Funcionamento
+# 📂 Organização dos arquivos
 
-### app.js
-
-Responsável por:
-
-* Interceptar os cliques dos links.
-* Evitar recarregamento da página.
-* Acionar a navegação.
-* Tratar os botões Voltar e Avançar do navegador.
-
-### router.js
+## app.js
 
 Responsável por:
 
-* Definir as rotas da aplicação.
-* Atualizar a URL.
-* Atualizar o título da página.
-* Carregar o template correto.
-
-### renderer.js
-
-Responsável por:
-
-* Buscar os templates HTML.
-* Inserir o conteúdo dentro do elemento #app.
+- Interceptar os cliques dos links.
+- Impedir o recarregamento da página.
+- Acionar o roteador.
+- Tratar os botões Voltar e Avançar do navegador.
 
 ---
 
-## Exemplo de Rota
+## router.js
+
+Responsável por:
+
+- Declarar todas as rotas.
+- Alterar a URL.
+- Atualizar o título da página.
+- Chamar a renderização do template.
+
+---
+
+## render.js
+
+Responsável por:
+
+- Buscar os templates HTML utilizando Fetch API.
+- Inserir o conteúdo dentro da aplicação.
+
+---
+
+# 📌 Exemplo das rotas
 
 ```javascript
-const ROTAS = {
+const rotas = {
     "/": {
-        template: "/templates/home.html",
+        template: "templates/index.html",
         titulo: "Home"
     },
+
     "/sobre": {
-        template: "/templates/sobre.html",
+        template: "templates/sobre.html",
         titulo: "Sobre"
     },
+
     "/contato": {
-        template: "/templates/contato.html",
+        template: "templates/contato.html",
         titulo: "Contato"
     }
 };
@@ -111,155 +140,166 @@ const ROTAS = {
 
 ---
 
-## Atualização Dinâmica do Title
-
-Além da URL amigável, o sistema também altera o título da página automaticamente.
+# 🧩 Renderização dinâmica
 
 ```javascript
-document.title = ROTA.titulo;
+export async function renderizar(caminho){
+
+    const app = document.querySelector("#app");
+
+    const resposta = await fetch(caminho);
+
+    app.innerHTML = await resposta.text();
+
+}
 ```
-
-Exemplos:
-
-* Home
-* Sobre
-* Contato
-* 404
 
 ---
 
-## History API
+# 🌐 Alterando a URL sem recarregar
 
-A navegação é realizada utilizando:
+A navegação acontece utilizando a History API.
 
 ```javascript
 history.pushState({}, "", url);
 ```
 
-Isso permite alterar a URL sem recarregar a página.
+Isso permite alterar a URL mantendo a aplicação carregada.
 
 ---
 
-## Apache
+# 📝 Alterando o título da página
 
-O arquivo:
+```javascript
+document.title = rota.titulo;
+```
+
+Cada rota possui seu próprio título.
+
+Exemplos:
+
+- Home
+- Sobre
+- Contato
+- 404
+
+---
+
+# ⚡ Carregando templates com Fetch API
+
+```javascript
+const resposta = await fetch(caminho);
+
+app.innerHTML = await resposta.text();
+```
+
+Cada página é carregada dinamicamente sem necessidade de atualizar o navegador.
+
+---
+
+# 🌎 Configuração do Apache
+
+O arquivo
 
 ```text
 config_apache.txt
 ```
 
-contém um exemplo de configuração utilizando .htaccess para manter as rotas funcionando após pressionar F5.
+contém uma configuração utilizando **.htaccess** para que as URLs amigáveis continuem funcionando após atualizar a página (F5).
 
 ---
 
-## Nginx
+# 🌎 Configuração do Nginx
 
-O arquivo:
+O arquivo
 
 ```text
-config_nginx.md
+config_nginx.txt
 ```
 
-contém um exemplo de configuração utilizando:
+contém a configuração utilizando:
 
 ```nginx
 try_files $uri $uri/ /index.html;
 ```
 
-permitindo que as URLs amigáveis funcionem corretamente após atualização da página.
+Essa configuração evita o erro 404 ao atualizar qualquer rota da aplicação.
 
 ---
 
-## O Que Você Vai Aprender
+# 🧠 Conceitos abordados
 
-* SPA sem Framework
-* JavaScript Modular
-* History API
-* Fetch API
-* Manipulação de Rotas
-* URLs Amigáveis
-* Atualização Dinâmica de Título
-* Organização de Código
-* Separação de Responsabilidades
-* Clean Code
-
----
-
-## Vídeo Explicando o Projeto
-
-Este projeto foi desenvolvido para acompanhar o vídeo do canal Rogerio Pontes TI.
-
-O objetivo é mostrar que é possível criar URLs amigáveis modernas utilizando apenas JavaScript puro, sem React, Angular, Vue ou qualquer framework.
+- JavaScript Puro
+- SPA
+- Single Page Application
+- URLs Amigáveis
+- History API
+- Fetch API
+- JavaScript Modules
+- Import e Export
+- Arquitetura Modular
+- Organização de Código
+- Separação de Responsabilidades
+- Desenvolvimento Web
 
 ---
 
-## Autor
+# 🚀 Próxima etapa
+
+Este projeto será evoluído nos próximos vídeos para uma aplicação muito mais completa.
+
+Serão adicionados:
+
+- Cadastro de produtos
+- Listagem dinâmica
+- Carrinho de compras
+- Login
+- Checkout
+- Persistência de dados
+- Componentes reutilizáveis
+- Arquitetura modular
+
+Tudo utilizando apenas JavaScript puro.
+
+---
+
+# 📂 Código-fonte
+
+Este repositório acompanha o vídeo publicado no canal **Rogerio Pontes TI**.
+
+O objetivo é demonstrar, na prática, que conceitos normalmente associados a frameworks podem ser implementados utilizando apenas as APIs nativas do navegador.
+
+---
+
+# 📺 Canal Rogerio Pontes TI
+
+Se você gosta de conteúdos sobre:
+
+- JavaScript
+- PHP
+- Linux
+- Git e GitHub
+- Arquitetura de Software
+- Clean Code
+- Desenvolvimento Web
+- Programação
+
+inscreva-se no canal para acompanhar os próximos projetos.
+
+https://www.youtube.com/@rogeriopontesti
+
+---
+
+# 👨‍💻 Autor
 
 Rogerio Pontes
 
 Canal: Rogerio Pontes TI
 
-Compartilhando conhecimento sobre programação, arquitetura de software, JavaScript, PHP, Linux e desenvolvimento web.
-
 ---
 
-## Vídeo Completo
+# 📄 Licença
 
-📺 **Assista ao vídeo completo no YouTube:**
+Este projeto possui finalidade exclusivamente educacional.
 
-[▶️ URL Amigável sem Framework e sem Backend](https://youtu.be/0RDbccBC9YU)
-
----
-
-## Canal Rogerio Pontes TI
-
-🔔 Inscreva-se no canal:
-
-[https://www.youtube.com/@rogeriopontesti](https://www.youtube.com/@rogeriopontesti)
-
-Neste vídeo você aprenderá:
-
-* Como criar URLs amigáveis com JavaScript puro.
-* Como utilizar History API.
-* Como renderizar páginas dinamicamente.
-* Como alterar o título da página automaticamente.
-* Como configurar Apache e Nginx.
-* Como estruturar uma SPA sem frameworks.
-
----
-
-## Código Fonte
-
-O código completo deste projeto está disponível neste repositório.
-
-Caso queira contribuir, fique à vontade para abrir Issues ou Pull Requests.
-
----
-
-## Canal no YouTube
-
-Se você gosta de conteúdos sobre:
-
-* JavaScript
-* PHP
-* Linux
-* Git e GitHub
-* Clean Code
-* Arquitetura de Software
-* Desenvolvimento Web
-* Programação para iniciantes
-
-Inscreva-se no canal:
-
-🎥 https://www.youtube.com/@rogeriopontesti
-
-Novos vídeos todas as semanas.
-
----
-
-## Licença
-
-Este projeto é disponibilizado para fins educacionais.
-
-Sinta-se livre para estudar, modificar e utilizar como base para seus próprios projetos.
-
+Sinta-se à vontade para estudar, modificar e utilizar o código como base para seus próprios projetos.
